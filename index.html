@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lucar Mecânica Automotiva — Diagnóstico e manutenção de confiança</title>
+<meta name="description" content="Lucar Mecânica Automotiva: troca de óleo, freios, suspensão, alinhamento e diagnóstico. Orçamento rápido pelo WhatsApp.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --asphalt: #17181A;
+    --asphalt-2: #1E2022;
+    --steel: #2A2D30;
+    --steel-line: rgba(237,234,226,0.10);
+    --chalk: #EDEAE2;
+    --chalk-dim: #A6A8A4;
+    --hazard: #FFC72C;
+    --hazard-dim: #C99A1E;
+    --orange: #E85D2C;
+    --green: #57B673;
+    --red: #E8503A;
+    --radius: 6px;
+    --maxw: 1160px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--asphalt);
+    color:var(--chalk);
+    font-family:'Inter', sans-serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:'Oswald', sans-serif;
+    text-transform:uppercase;
+    letter-spacing:0.01em;
+    margin:0;
+    color:var(--chalk);
+  }
+  .mono{font-family:'JetBrains Mono', monospace;}
+  a{color:inherit;}
+  img{max-width:100%;display:block;}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 24px;}
+  section{padding:96px 0;}
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--hazard);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:14px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:22px;height:2px;
+    background:var(--hazard);
+    display:inline-block;
+  }
+  .section-head{max-width:640px; margin-bottom:52px;}
+  .section-head h2{font-size:clamp(28px,4vw,42px); margin-bottom:14px;}
+  .section-head p{color:var(--chalk-dim); font-size:16px; margin:0;}
+
+  :focus-visible{outline:2px solid var(--hazard); outline-offset:3px;}
+
+  section[id], .info-block[id]{scroll-margin-top:96px;}
+
+  /* ---------- HAZARD STRIPE ---------- */
+  .hazard-strip{
+    height:6px;
+    background:repeating-linear-gradient(135deg, var(--hazard) 0 18px, var(--asphalt) 18px 36px);
+    opacity:0.9;
+  }
+
+  /* ---------- HEADER ---------- */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(23,24,26,0.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--steel-line);
+  }
+  .nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 0;
+  }
+  .brand{display:flex; align-items:center; gap:12px; text-decoration:none;}
+  .brand-mark{width:38px; height:38px; flex:none;}
+  .brand-text{display:flex; flex-direction:column; line-height:1.1;}
+  .brand-text .name{font-family:'Oswald',sans-serif; font-weight:700; font-size:20px; letter-spacing:0.04em; color:var(--chalk);}
+  .brand-text .sub{font-family:'JetBrains Mono',monospace; font-size:9.5px; letter-spacing:0.16em; color:var(--chalk-dim); text-transform:uppercase;}
+  nav.links{display:flex; align-items:center; gap:28px;}
+  nav.links a{
+    font-size:14px; text-decoration:none; color:var(--chalk-dim);
+    font-weight:500; position:relative; padding:4px 0;
+    transition:color .2s ease;
+  }
+  nav.links a:hover{color:var(--chalk);}
+  nav.links a::after{
+    content:""; position:absolute; left:0; bottom:-2px; height:2px; width:0;
+    background:var(--hazard); transition:width .2s ease;
+  }
+  nav.links a:hover::after{width:100%;}
+
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:'Inter',sans-serif; font-weight:600; font-size:14.5px;
+    padding:12px 22px; border-radius:var(--radius);
+    text-decoration:none; cursor:pointer; border:1px solid transparent;
+    transition:transform .15s ease, box-shadow .15s ease, background .2s ease;
+    white-space:nowrap;
+  }
+  .btn:hover{transform:translateY(-1px);}
+  .btn-primary{background:var(--hazard); color:#1B1200;}
+  .btn-primary:hover{background:#FFD35C; box-shadow:0 6px 18px rgba(255,199,44,0.25);}
+  .btn-ghost{background:transparent; color:var(--chalk); border-color:var(--steel-line);}
+  .btn-ghost:hover{border-color:var(--chalk-dim);}
+  .btn-sm{padding:9px 16px; font-size:13px;}
+  .header-cta{display:flex; align-items:center;}
+  .nav-toggle{display:none;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    padding:88px 0 80px;
+    background:
+      radial-gradient(1100px 500px at 85% -10%, rgba(232,93,44,0.16), transparent 60%),
+      var(--asphalt);
+    border-bottom:1px solid var(--steel-line);
+    position:relative;
+    overflow:hidden;
+  }
+  .hero .wrap{display:grid; grid-template-columns:1.05fr 0.95fr; gap:56px; align-items:center; position:relative; z-index:1;}
+  .hero::before{
+    content:"";
+    position:absolute; inset:0;
+    background:repeating-linear-gradient(115deg, rgba(255,199,44,0.055) 0 2px, transparent 2px 96px);
+    animation:speedlines 16s linear infinite;
+    pointer-events:none;
+    z-index:0;
+  }
+  @keyframes speedlines{ from{background-position:0 0;} to{background-position:640px 0;} }
+  @media (prefers-reduced-motion:reduce){ .hero::before{animation:none;} }
+  .hero-eyebrow{
+    font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:0.16em;
+    color:var(--hazard); text-transform:uppercase; margin-bottom:20px;
+  }
+  .hero h1{
+    font-size:clamp(34px, 5vw, 56px);
+    line-height:1.05;
+    margin-bottom:22px;
+  }
+  .hero h1 span{color:var(--hazard);}
+  .hero p.lead{
+    color:var(--chalk-dim); font-size:17px; max-width:480px; margin-bottom:32px;
+  }
+  .hero-ctas{display:flex; gap:14px; flex-wrap:wrap; margin-bottom:44px;}
+  .stat-row{display:flex; gap:32px; flex-wrap:wrap;}
+  .stat{display:flex; flex-direction:column; gap:4px;}
+  .stat .num{font-family:'JetBrains Mono',monospace; font-size:22px; color:var(--chalk); font-weight:700;}
+  .stat .label{font-size:12.5px; color:var(--chalk-dim); text-transform:uppercase; letter-spacing:0.06em;}
+
+  /* Gauge / painel de instrumentos */
+  .gauge-wrap{display:flex; flex-direction:column; align-items:center; justify-content:center;}
+  .gauge-frame{
+    position:relative;
+    overflow:hidden;
+    background:var(--asphalt-2);
+    border:1px solid var(--steel-line);
+    border-radius:16px;
+    padding:26px 22px 22px;
+    box-shadow:0 30px 60px -20px rgba(0,0,0,0.6);
+    width:100%; max-width:380px;
+  }
+  .gauge-frame::before{
+    content:"";
+    position:absolute; top:-45%; left:-15%;
+    width:55%; height:190%;
+    background:linear-gradient(120deg, rgba(255,255,255,0.055), rgba(255,255,255,0) 65%);
+    transform:rotate(10deg);
+    pointer-events:none;
+  }
+
+  .cluster-lights{
+    display:flex; align-items:center; justify-content:center; gap:22px;
+    padding-bottom:14px; margin-bottom:16px;
+    border-bottom:1px solid var(--steel-line);
+  }
+  .ind{
+    width:20px; height:20px; display:flex; align-items:center; justify-content:center;
+    opacity:0.32; transition:opacity .2s ease;
+  }
+  .ind svg{width:16px; height:16px; stroke:var(--chalk-dim); fill:none;}
+  .ind.on{opacity:1;}
+  .ind.on svg{stroke:var(--green);}
+  .ind.amber.on svg{stroke:var(--hazard);}
+  .ind.blink{animation:blink 1.15s steps(1,end) infinite;}
+  @keyframes blink{0%,49%{opacity:1;} 50%,100%{opacity:0.18;}}
+
+  .cluster-main{display:flex; align-items:flex-end; justify-content:center; gap:3%;}
+  .main-gauge{flex:0 0 58%; min-width:0;}
+  .mini-gauge{flex:0 0 18%; min-width:0; display:flex; flex-direction:column; align-items:center; padding-bottom:4px;}
+  .mini-gauge svg{width:100%; height:auto;}
+  .mini-label{
+    font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:0.06em;
+    color:var(--chalk-dim); text-transform:uppercase; margin-top:2px; text-align:center;
+  }
+
+  .gauge-readout{margin-top:6px; text-align:center;}
+  .gauge-readout .status{
+    font-family:'JetBrains Mono',monospace; font-size:13px; letter-spacing:0.14em;
+    color:var(--green); text-transform:uppercase;
+    opacity:0; animation:fadein .6s ease 1.9s forwards;
+  }
+  .gauge-readout .status2{
+    font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:0.1em;
+    color:var(--chalk-dim); margin-top:4px;
+    opacity:0; animation:fadein .6s ease 2.1s forwards;
+  }
+  @keyframes fadein{to{opacity:1;}}
+
+  .needle{
+    transform-origin:160px 172px;
+    transform:rotate(40deg);
+    animation:sweep 2s cubic-bezier(.2,.9,.2,1) forwards,
+              idle 2.6s ease-in-out 2s infinite;
+  }
+  @keyframes sweep{
+    0%{transform:rotate(-70deg);}
+    60%{transform:rotate(47deg);}
+    100%{transform:rotate(40deg);}
+  }
+  @keyframes idle{
+    0%, 100%{transform:rotate(40deg);}
+    25%{transform:rotate(41.4deg);}
+    75%{transform:rotate(38.6deg);}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .needle{animation:none; transform:rotate(40deg);}
+    .gauge-readout .status, .gauge-readout .status2{animation:none; opacity:1;}
+    .ind.blink{animation:none; opacity:1;}
+  }
+  .mini-needle{transform-origin:50px 58px;}
+  .mini-needle.fuel{transform:rotate(18deg); animation:mini-fuel 1.8s cubic-bezier(.2,.9,.2,1) .25s both;}
+  .mini-needle.temp{transform:rotate(-14deg); animation:mini-temp 1.8s cubic-bezier(.2,.9,.2,1) .4s both;}
+  @keyframes mini-fuel{0%{transform:rotate(-55deg);} 100%{transform:rotate(18deg);}}
+  @keyframes mini-temp{0%{transform:rotate(55deg);} 100%{transform:rotate(-14deg);}}
+  @media (prefers-reduced-motion:reduce){
+    .mini-needle.fuel{animation:none; transform:rotate(18deg);}
+    .mini-needle.temp{animation:none; transform:rotate(-14deg);}
+  }
+
+  /* ---------- SERVICES ---------- */
+  .services-grid{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:22px;
+  }
+  .service-card{
+    background:var(--asphalt-2);
+    border:1px solid var(--steel-line);
+    border-radius:var(--radius);
+    padding:30px 26px;
+    display:flex; flex-direction:column; gap:14px;
+    transition:transform .2s ease, border-color .2s ease, background .2s ease;
+  }
+  .service-card:hover{
+    transform:translateY(-4px);
+    border-color:rgba(255,199,44,0.35);
+    background:#212427;
+  }
+  .service-icon{
+    width:52px; height:52px; border-radius:50%;
+    border:2px solid var(--hazard);
+    display:flex; align-items:center; justify-content:center;
+    position:relative;
+    flex:none;
+  }
+  .service-icon::before{
+    content:"";
+    position:absolute; inset:-7px;
+    border-radius:50%;
+    border:1px dashed rgba(255,199,44,0.35);
+  }
+  .service-icon svg{width:24px; height:24px; stroke:var(--hazard); fill:none;}
+  .service-card h3{font-size:19px; letter-spacing:0.01em;}
+  .service-card p{color:var(--chalk-dim); font-size:14.5px; margin:0; flex-grow:1;}
+  .service-link{
+    font-family:'JetBrains Mono',monospace; font-size:12.5px; letter-spacing:0.04em;
+    color:var(--chalk); text-decoration:none; display:inline-flex; align-items:center; gap:6px;
+    padding-top:8px; border-top:1px solid var(--steel-line);
+  }
+  .service-link:hover{color:var(--hazard);}
+  .service-link svg{width:13px; height:13px;}
+
+  /* ---------- GALLERY ---------- */
+  .gallery-grid{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:18px;
+  }
+  .photo-tile{
+    position:relative;
+    border-radius:var(--radius);
+    border:1px dashed var(--steel-line);
+    background:
+      linear-gradient(155deg, #23262A, #1B1D1F);
+    aspect-ratio:4/3;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px;
+    padding:18px;
+    text-align:center;
+    overflow:hidden;
+  }
+  .photo-tile::after{
+    content:"";
+    position:absolute; inset:0;
+    background:
+      linear-gradient(90deg, transparent 0 24px, var(--steel-line) 24px 25px),
+      linear-gradient(0deg, transparent 0 24px, var(--steel-line) 24px 25px);
+    background-size:26px 26px;
+    opacity:0.35;
+    pointer-events:none;
+  }
+  .photo-tile svg{width:34px; height:34px; stroke:var(--chalk-dim); fill:none; position:relative; z-index:1;}
+  .photo-tile .cap{
+    font-family:'JetBrains Mono',monospace; font-size:11.5px; letter-spacing:0.08em;
+    color:var(--chalk-dim); text-transform:uppercase; position:relative; z-index:1;
+  }
+  .photo-tile .tag{
+    position:absolute; top:10px; left:10px;
+    font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--hazard);
+    letter-spacing:0.1em; z-index:1;
+  }
+
+  /* ---------- TESTIMONIALS ---------- */
+  .testi-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:22px;}
+  .testi-card{
+    background:var(--asphalt-2);
+    border:1px solid var(--steel-line);
+    border-radius:var(--radius);
+    padding:28px 26px;
+    position:relative;
+  }
+  .testi-card::before{
+    content:"";
+    position:absolute; top:0; left:26px; right:26px; height:0;
+    border-top:1px dashed var(--steel-line);
+  }
+  .stars{display:flex; gap:4px; margin-bottom:14px;}
+  .stars svg{width:15px; height:15px; fill:var(--hazard); stroke:none;}
+  .testi-card p.quote{font-size:15px; color:var(--chalk); margin:0 0 20px;}
+  .testi-who{display:flex; flex-direction:column; gap:2px;}
+  .testi-who .who-name{font-weight:600; font-size:14px;}
+  .testi-who .who-car{font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--chalk-dim);}
+
+  /* ---------- LOCATION / HOURS ---------- */
+  .loc-grid{display:grid; grid-template-columns:0.9fr 1.1fr; gap:44px; align-items:start;}
+  .info-block{
+    background:var(--asphalt-2); border:1px solid var(--steel-line); border-radius:var(--radius);
+    padding:28px; margin-bottom:22px;
+  }
+  .info-block h3{font-size:14px; letter-spacing:0.1em; color:var(--hazard); margin-bottom:16px;}
+  .info-row{display:flex; gap:12px; margin-bottom:12px; align-items:flex-start;}
+  .info-row:last-child{margin-bottom:0;}
+  .info-row svg{width:18px; height:18px; stroke:var(--chalk-dim); fill:none; flex:none; margin-top:2px;}
+  .info-row .t{font-size:14.5px; color:var(--chalk-dim);}
+  .info-row .t strong{color:var(--chalk); display:block; font-weight:600; margin-bottom:2px;}
+
+  table.hours{width:100%; border-collapse:collapse;}
+  table.hours td{
+    padding:9px 0; font-size:14.5px; border-bottom:1px solid var(--steel-line);
+    font-family:'JetBrains Mono',monospace;
+  }
+  table.hours tr:last-child td{border-bottom:none;}
+  table.hours td.day{color:var(--chalk-dim);}
+  table.hours td.time{text-align:right; color:var(--chalk); font-weight:500;}
+  table.hours td.closed{text-align:right; color:var(--red);}
+
+  .map-frame{
+    border:1px solid var(--steel-line); border-radius:var(--radius); overflow:hidden;
+    height:100%; min-height:420px;
+  }
+  .map-frame iframe{width:100%; height:100%; min-height:420px; border:0; filter:grayscale(0.25) contrast(1.05);}
+
+  /* ---------- FINAL CTA ---------- */
+  .cta-band{
+    background:linear-gradient(120deg, #1F2022, #23181150);
+    background-color:var(--asphalt-2);
+    border-top:1px solid var(--steel-line);
+    border-bottom:1px solid var(--steel-line);
+    padding:64px 0;
+    text-align:center;
+  }
+  .cta-band h2{font-size:clamp(24px,3.4vw,34px); margin-bottom:14px;}
+  .cta-band p{color:var(--chalk-dim); margin-bottom:28px;}
+  .cta-band .hero-ctas{justify-content:center;}
+
+  /* ---------- FOOTER ---------- */
+  footer{padding:56px 0 40px;}
+  .foot-grid{display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:40px; margin-bottom:40px;}
+  .foot-brand p{color:var(--chalk-dim); font-size:14px; max-width:320px; margin-top:14px;}
+  footer h4{font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:0.12em; color:var(--chalk-dim); text-transform:uppercase; margin-bottom:16px;}
+  footer ul{list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:10px;}
+  footer ul a{text-decoration:none; color:var(--chalk-dim); font-size:14.5px; transition:color .2s ease;}
+  footer ul a:hover{color:var(--hazard);}
+  .foot-bottom{
+    border-top:1px solid var(--steel-line); padding-top:22px;
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px;
+    font-size:12.5px; color:var(--chalk-dim); font-family:'JetBrains Mono',monospace;
+  }
+
+  /* ---------- FLOATING WHATSAPP ---------- */
+  .fab{
+    position:fixed; right:22px; bottom:22px; z-index:60;
+    width:58px; height:58px; border-radius:50%;
+    background:#2DBE5F; color:#0C1F13;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 10px 26px rgba(0,0,0,0.4);
+    text-decoration:none;
+  }
+  .fab svg{width:28px; height:28px; fill:#0C1F13;}
+  .fab-ring{
+    position:absolute; inset:0; border-radius:50%;
+    border:2px solid #2DBE5F;
+    animation:pulse 2.2s ease-out infinite;
+  }
+  @keyframes pulse{
+    0%{transform:scale(1); opacity:0.7;}
+    100%{transform:scale(1.7); opacity:0;}
+  }
+  @media (prefers-reduced-motion:reduce){ .fab-ring{animation:none; display:none;} }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:980px){
+    .hero .wrap{grid-template-columns:1fr; gap:48px;}
+    .gauge-wrap{order:-1;}
+    .services-grid{grid-template-columns:repeat(2,1fr);}
+    .gallery-grid{grid-template-columns:repeat(2,1fr);}
+    .testi-grid{grid-template-columns:1fr;}
+    .loc-grid{grid-template-columns:1fr;}
+    .foot-grid{grid-template-columns:1fr 1fr;}
+  }
+  @media (max-width:720px){
+    nav.links{display:none;}
+    section{padding:64px 0;}
+    .services-grid{grid-template-columns:1fr;}
+    .gallery-grid{grid-template-columns:repeat(2,1fr);}
+    .foot-grid{grid-template-columns:1fr;}
+    .stat-row{gap:22px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ HEADER ============ -->
+<header>
+  <div class="hazard-strip"></div>
+  <div class="wrap nav">
+    <a href="#topo" class="brand">
+      <svg class="brand-mark" viewBox="0 0 40 40" fill="none">
+        <circle cx="20" cy="20" r="17" stroke="#FFC72C" stroke-width="2"/>
+        <path d="M20 8 L20 13 M20 27 L20 32 M8 20 L13 20 M27 20 L32 20" stroke="#EDEAE2" stroke-width="2" stroke-linecap="round"/>
+        <path d="M20 20 L27 14" stroke="#E85D2C" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="20" cy="20" r="2.5" fill="#EDEAE2"/>
+      </svg>
+      <span class="brand-text">
+        <span class="name">LUCAR</span>
+        <span class="sub">Mecânica Automotiva</span>
+      </span>
+    </a>
+    <nav class="links">
+      <a href="#servicos">Serviços</a>
+      <a href="#fotos">Fotos</a>
+      <a href="#depoimentos">Depoimentos</a>
+      <a href="#localizacao">Localização</a>
+      <a href="#horario">Horário</a>
+    </nav>
+    <div class="header-cta">
+      <a class="btn btn-primary btn-sm" target="_blank" rel="noopener"
+         href="https://wa.me/5511999999999?text=Ol%C3%A1%2C%20Lucar!%20Quero%20solicitar%20um%20or%C3%A7amento.">
+        WhatsApp
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="topo">
+  <div class="wrap">
+    <div class="hero-copy">
+      <div class="hero-eyebrow">Diagnóstico · Manutenção · Confiança</div>
+      <h1>Seu carro no <span>ponto certo.</span></h1>
+      <p class="lead">
+        Na Lucar, cada carro entra com um problema e sai com um diagnóstico honesto,
+        peça trocada de verdade e explicação clara do que foi feito. Sem enrolação, sem letra miúda.
+      </p>
+      <div class="hero-ctas">
+        <a class="btn btn-primary" target="_blank" rel="noopener"
+           href="https://wa.me/5511999999999?text=Ol%C3%A1%2C%20Lucar!%20Quero%20solicitar%20um%20or%C3%A7amento.">
+          Solicitar orçamento
+        </a>
+        <a class="btn btn-ghost" href="#servicos">Ver serviços</a>
+      </div>
+      <div class="stat-row">
+        <div class="stat"><span class="num">15+</span><span class="label">Anos de estrada</span></div>
+        <div class="stat"><span class="num">3.200+</span><span class="label">Carros atendidos</span></div>
+        <div class="stat"><span class="num">4.9/5</span><span class="label">Avaliação dos clientes</span></div>
+      </div>
+    </div>
+
+    <div class="gauge-wrap">
+      <div class="gauge-frame">
+
+        <!-- luzes de painel -->
+        <div class="cluster-lights">
+          <div class="ind"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 12a6 6 0 0 1 6-6h2a4 4 0 0 1 4 4v1a3 3 0 0 1-3 3h-1"/><circle cx="8" cy="16" r="2"/><circle cx="16" cy="16" r="2"/><path d="M6 12l-2 2M18 11h2"/></svg></div>
+          <div class="ind"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="4" width="10" height="16" rx="2"/><path d="M10 4V2h4v2M9 10h6"/></svg></div>
+          <div class="ind on"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-5"/><circle cx="12" cy="12" r="9"/></svg></div>
+          <div class="ind amber on blink"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h11M10 7l5 5-5 5"/></svg></div>
+        </div>
+
+        <!-- painel principal: mostrador de combustível, velocímetro/diagnóstico e temperatura -->
+        <div class="cluster-main">
+
+          <div class="mini-gauge">
+            <svg viewBox="0 0 100 76">
+              <path d="M12 58 A38 38 0 0 1 88 58" stroke="#3A3D40" stroke-width="8" fill="none" stroke-linecap="round"/>
+              <path d="M43.4 20.6 A38 38 0 0 1 69 25" stroke="#57B673" stroke-width="8" fill="none" stroke-linecap="round"/>
+              <g class="mini-needle fuel">
+                <line x1="50" y1="58" x2="50" y2="28" stroke="#EDEAE2" stroke-width="2.5" stroke-linecap="round"/>
+              </g>
+              <circle cx="50" cy="58" r="5" fill="#1E2022" stroke="#EDEAE2" stroke-width="1.5"/>
+              <text x="14" y="66" font-family="JetBrains Mono, monospace" font-size="7" fill="#6B6E71">E</text>
+              <text x="82" y="66" font-family="JetBrains Mono, monospace" font-size="7" fill="#6B6E71">F</text>
+            </svg>
+            <div class="mini-label">Combustível</div>
+          </div>
+
+          <div class="main-gauge">
+            <svg viewBox="0 0 320 200" width="100%">
+              <!-- trilha base -->
+              <path d="M30 172 A130 130 0 0 1 290 172" stroke="#3A3D40" stroke-width="14" fill="none" stroke-linecap="round"/>
+              <!-- zona vermelha -->
+              <path d="M30 172 A130 130 0 0 1 53.5 97.4" stroke="#E8503A" stroke-width="14" fill="none" stroke-linecap="round"/>
+              <!-- zona amarela -->
+              <path d="M53.5 97.4 A130 130 0 0 1 214.9 54.2" stroke="#FFC72C" stroke-width="14" fill="none" stroke-linecap="round"/>
+              <!-- zona verde -->
+              <path d="M214.9 54.2 A130 130 0 0 1 290 172" stroke="#57B673" stroke-width="14" fill="none" stroke-linecap="round"/>
+
+              <!-- marcadores -->
+              <g stroke="#6B6E71" stroke-width="2">
+                <line x1="37" y1="101" x2="24.9" y2="94"/>
+                <line x1="89" y1="49" x2="82" y2="36.9"/>
+                <line x1="160" y1="30" x2="160" y2="16"/>
+                <line x1="231" y1="49" x2="238" y2="36.9"/>
+                <line x1="283" y1="101" x2="295.1" y2="94"/>
+              </g>
+
+              <!-- agulha -->
+              <g class="needle">
+                <line x1="160" y1="172" x2="160" y2="58" stroke="#EDEAE2" stroke-width="3.5" stroke-linecap="round"/>
+              </g>
+              <circle cx="160" cy="172" r="9" fill="#17181A" stroke="#EDEAE2" stroke-width="2"/>
+
+              <text x="160" y="196" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="#A6A8A4" letter-spacing="1.5">DIAGNÓSTICO</text>
+            </svg>
+          </div>
+
+          <div class="mini-gauge">
+            <svg viewBox="0 0 100 76">
+              <path d="M12 58 A38 38 0 0 1 88 58" stroke="#3A3D40" stroke-width="8" fill="none" stroke-linecap="round"/>
+              <path d="M31 25 A38 38 0 0 1 56.6 20.6" stroke="#57B673" stroke-width="8" fill="none" stroke-linecap="round"/>
+              <g class="mini-needle temp">
+                <line x1="50" y1="58" x2="50" y2="28" stroke="#EDEAE2" stroke-width="2.5" stroke-linecap="round"/>
+              </g>
+              <circle cx="50" cy="58" r="5" fill="#1E2022" stroke="#EDEAE2" stroke-width="1.5"/>
+              <text x="14" y="66" font-family="JetBrains Mono, monospace" font-size="7" fill="#6B6E71">C</text>
+              <text x="82" y="66" font-family="JetBrains Mono, monospace" font-size="7" fill="#6B6E71">Q</text>
+            </svg>
+            <div class="mini-label">Temperatura</div>
+          </div>
+
+        </div>
+
+        <div class="gauge-readout">
+          <div class="status">Status: aprovado</div>
+          <div class="status2">Revisão completa em todos os pontos</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SERVIÇOS ============ -->
+<section id="servicos">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">O que fazemos</div>
+      <h2>Serviços</h2>
+      <p>Da manutenção simples ao diagnóstico mais complicado — cada carro passa pelo mesmo cuidado técnico.</p>
+    </div>
+
+    <div class="services-grid">
+
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2C12 2 6 10.5 6 15a6 6 0 0 0 12 0c0-4.5-6-13-6-13Z"/>
+          </svg>
+        </div>
+        <h3>Troca de óleo</h3>
+        <p>Óleo e filtro certos para o seu motor, com checagem de nível e vazamentos no mesmo atendimento.</p>
+        <a class="service-link" target="_blank" rel="noopener"
+           href="https://wa.me/5511999999999?text=Ol%C3%A1%2C%20Lucar!%20Quero%20um%20or%C3%A7amento%20de%20troca%20de%20%C3%B3leo.">
+          Pedir orçamento
+          <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="8"/>
+            <circle cx="12" cy="12" r="2.4"/>
+            <path d="M12 4v3M12 17v3M4 12h3M17 12h3M6.3 6.3l2.1 2.1M15.6 15.6l2.1 2.1M6.3 17.7l2.1-2.1M15.6 8.4l2.1-2.1"/>
+          </svg>
+        </div>
+        <h3>Freios</h3>
+        <p>Pastilhas, discos e fluido revisados para o carro parar com segurança — sempre.</p>
+        <a class="service-link" target="_blank" rel="noopener"
+           href="https://wa.me/5511999999999?text=Ol%C3%A1%2C%20Lucar!%20Quero%20um%20or%C3%A7amento%20de%20freios.">
+          Pedir orçamento
+          <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M8 3v3.5l8-2v3.5l-8-2V12l8-2v3.5l-8-2V21"/>
+          </svg>
+        </div>
+        <h3>Suspensão</h3>
+        <p>Amortecedores, molas e batentes — pra acabar com aquele barulho e devolver a estabilidade.</p>
+        <a class="service-link" target="_blank" rel="noopener"
+           href="https://wa.me/5511999999999?text=Ol%C3%A1%2C%20Lucar!%20Quero%20um%20or%C3%A7amento%20de%20suspens%C3%A3o.">
+          Pedir orçamento
+          <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"/>
+            <path d="M12 3v4M12 17v4M3 12h4M17 12h4"/>
+            <circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none"/>
+          </svg>
+        </div>
+        <h3>Alinhamento</h3>
+        <p>Geometria e balanceamento das rodas, pra parar de puxar pro lado e economizar pneu.</p>
+        <a class="service-link" target="_blank" rel="noopener"
+           href="https://wa.me/5511999999999?text=Ol%C3%A1%2C%20Lucar!%20Quero%20um%20or%C3%A7amento%20de%20alinhamento.">
+          Pedir orçamento
+          <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="7" y="7" width="10" height="10" rx="1.5"/>
+            <path d="M9.5 7V4M14.5 7V4M9.5 20v-3M14.5 20v-3M7 9.5H4M7 14.5H4M20 9.5h-3M20 14.5h-3"/>
+          </svg>
+        </div>
+        <h3>Diagnóstico</h3>
+        <p>Scanner automotivo e olho clínico para achar a causa real — antes de trocar qualquer peça.</p>
+        <a class="service-link" target="_blank" rel="noopener"
+           href="https://wa.me/5511999999999?text=Ol%C3%A1%2C%20Lucar!%20Quero%20um%20diagn%C3%B3stico%20para%20meu%20carro.">
+          Pedir orçamento
+          <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+
+      <div class="service-card" style="background:linear-gradient(160deg, #23262A, #1B1D1F); align-items:flex-start;">
+        <div class="service-icon" style="border-color:var(--orange);">
+          <svg viewBox="0 0 24 24" stroke="currentColor" style="stroke:var(--orange)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3l1.8 4.3L18 9l-4.2 1.7L12 15l-1.8-4.3L6 9l4.2-1.7z"/>
+          </svg>
+        </div>
+        <h3>Não achou o serviço?</h3>
+        <p>Fala com a gente — atendemos praticamente qualquer problema mecânico e elétrico do seu veículo.</p>
+        <a class="service-link" target="_blank" rel="noopener"
+           href="https://wa.me/5511999999999?text=Ol%C3%A1%2C%20Lucar!%20Tenho%20uma%20d%C3%BAvida%20sobre%20um%20servi%C3%A7o.">
+          Falar com a oficina
+          <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOTOS ============ -->
+<section id="fotos">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Bastidores</div>
+      <h2>Nossa oficina</h2>
+      <p>Espaço reservado para fotos reais da oficina — substitua cada bloco abaixo pela imagem correspondente.</p>
+    </div>
+
+    <div class="gallery-grid">
+      <div class="photo-tile">
+        <span class="tag">FOTO 01</span>
+        <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="1.5"/><circle cx="12" cy="12.5" r="3.2"/><path d="M8 6l1.2-2h5.6L16 6"/></svg>
+        <span class="cap">Fachada da oficina</span>
+      </div>
+      <div class="photo-tile">
+        <span class="tag">FOTO 02</span>
+        <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16l4-8 4 3 4-6 4 11"/><path d="M4 19h16"/></svg>
+        <span class="cap">Elevador em uso</span>
+      </div>
+      <div class="photo-tile">
+        <span class="tag">FOTO 03</span>
+        <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v18M6 3l6 3-6 3M12 9h6M12 14h6M12 19h6"/></svg>
+        <span class="cap">Painel de ferramentas</span>
+      </div>
+      <div class="photo-tile">
+        <span class="tag">FOTO 04</span>
+        <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/></svg>
+        <span class="cap">Bancada de pneus</span>
+      </div>
+      <div class="photo-tile">
+        <span class="tag">FOTO 05</span>
+        <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l4-10h8l4 10"/><circle cx="8.5" cy="20" r="1.5"/><circle cx="15.5" cy="20" r="1.5"/></svg>
+        <span class="cap">Carro em manutenção</span>
+      </div>
+      <div class="photo-tile">
+        <span class="tag">FOTO 06</span>
+        <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21v-6a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v6"/><circle cx="12" cy="7" r="3"/></svg>
+        <span class="cap">Equipe Lucar</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DEPOIMENTOS ============ -->
+<section id="depoimentos">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Quem já passou por aqui</div>
+      <h2>Depoimentos</h2>
+      <p>O que os clientes falam depois que o carro sai da oficina.</p>
+    </div>
+
+    <div class="testi-grid">
+      <div class="testi-card">
+        <div class="stars">
+          <svg viewBox="0 0 20 20"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.2-5.6-3.3-5.6 3.3 1.4-6.2L1 7.5l6.4-.6z"/></svg>
+          <svg viewBox="0 0 20 20"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.2-5.6-3.3-5.6 3.3 1.4-6.2L1 7.5l6.4-.6z"/></svg>
+          <svg viewBox="0 0 20 20"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.2-5.6-3.3-5.6 3.3 1.4-6.2L1 7.5l6.4-.6z"/></svg>
+          <svg viewBox="0 0 20 20"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.2-5.6-3.3-5.6 3.3 1.4-6.2L1 7.5l6.4-.6z"/></svg>
+          <svg viewBox="0 0 20 20"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.2-5.6-3.3-5.6 3.3 1.4-6.2L1 7.5l6.4-.6z"/></svg>
+        </div>
+        <p class="quote">"Levei achando que era a suspensão inteira e era só um batente. Podiam ter cobrado muito mais e não cobraram. Voltei mais duas vezes."</p>
+        <div class="testi-who">
+          <span class="who-name">Marcos Ferreira</span>
+          <span class="who-car">Honda Civic 2018</span>
+        </div>
+      </div>
+
+      <div class="testi-card">
+        <div class="stars">
+          <svg viewBox="0 0 20 20"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.2-5.6-3.3-5.6 3.3 1.4-6.2L1 7.5l6.4-.6z"/></svg>
+          <svg viewBox="0 0 20 20"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.2-5.6-3.3-5.6 3.3 1.4-6.2L1 7.5l6.4-.6z"/></svg>
+          <svg viewBox="0 0 20 20"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.2-5.6-3.3-5.6 3.3 1.4-6.2L1 7.5l6.4-.6z"/></svg>
+          <svg viewBox="0 0 20 20"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.2-5.6-3.3-5.6 3.3 1.4-6.2L1 7.5l6.4-.6z"/></svg>
+          <svg viewBox="0 0 20 20"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.2-5.6-3.3-5.6 3.3 1.4-6.2L1 7.5l6.4-.6z"/></svg>
+        </div>
+        <p class="quote">"O diagnóstico foi rápido e explicaram tudo com peça na mão, mostrando o desgaste. Isso é raro de achar hoje em dia."</p>
+        <div class="testi-who">
+          <span class="who-name">Renata Alves</span>
+          <span class="who-car">Chevrolet Onix 2020</span>
+        </div>
+      </div>
+
+      <div class="testi-card">
+        <div class="stars">
+          <svg viewBox="0 0 20 20"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.2-5.6-3.3-5.6 3.3 1.4-6.2L1 7.5l6.4-.6z"/></svg>
+          <svg viewBox="0 0 20 20"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.2-5.6-3.3-5.6 3.3 1.4-6.2L1 7.5l6.4-.6z"/></svg>
+          <svg viewBox="0 0 20 20"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.2-5.6-3.3-5.6 3.3 1.4-6.2L1 7.5l6.4-.6z"/></svg>
+          <svg viewBox="0 0 20 20"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.2-5.6-3.3-5.6 3.3 1.4-6.2L1 7.5l6.4-.6z"/></svg>
+          <svg viewBox="0 0 20 20"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.2-5.6-3.3-5.6 3.3 1.4-6.2L1 7.5l6.4-.6z"/></svg>
+        </div>
+        <p class="quote">"Uso a Lucar pra frota da minha empresa há três anos. Nunca tive carro parado sem aviso — sempre me avisam antes de qualquer problema virar dor de cabeça."</p>
+        <div class="testi-who">
+          <span class="who-name">Diego Sant'Anna</span>
+          <span class="who-car">Frota — 6 veículos</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LOCALIZAÇÃO + HORÁRIO ============ -->
+<section id="localizacao">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Onde estamos</div>
+      <h2>Localização &amp; horário</h2>
+      <p>Fácil de achar, fácil de estacionar. Chame no WhatsApp se precisar de referência pra chegar.</p>
+    </div>
+
+    <div class="loc-grid">
+      <div>
+        <div class="info-block">
+          <h3>ENDEREÇO</h3>
+          <div class="info-row">
+            <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.1-7-11a7 7 0 0 1 14 0c0 4.9-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+            <div class="t"><strong>Rua das Oficinas, 456</strong>Vila Industrial — São Paulo, SP · CEP 04000-000</div>
+          </div>
+          <div class="info-row">
+            <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h4l2 5-2.5 1.5a11 11 0 0 0 5 5L14 14l5 2v4a2 2 0 0 1-2 2C9.6 22 2 14.4 2 7a2 2 0 0 1 2-2z"/></svg>
+            <div class="t"><strong>(11) 99999-9999</strong>Ligação ou WhatsApp</div>
+          </div>
+          <div class="info-row">
+            <a class="btn btn-primary btn-sm" style="margin-top:6px" target="_blank" rel="noopener"
+               href="https://www.google.com/maps/dir/?api=1&destination=Rua+das+Oficinas+456+Vila+Industrial+Sao+Paulo+SP">
+              Como chegar
+            </a>
+          </div>
+        </div>
+
+        <div class="info-block" id="horario">
+          <h3>HORÁRIO DE FUNCIONAMENTO</h3>
+          <table class="hours">
+            <tr><td class="day">Segunda a sexta</td><td class="time">08:00 – 18:00</td></tr>
+            <tr><td class="day">Sábado</td><td class="time">08:00 – 13:00</td></tr>
+            <tr><td class="day">Domingo</td><td class="closed">Fechado</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="map-frame">
+        <iframe
+          src="https://www.google.com/maps?q=Rua+das+Oficinas+456+Vila+Industrial+Sao+Paulo+SP&output=embed"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Mapa de localização da Lucar Mecânica Automotiva">
+        </iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA FINAL ============ -->
+<div class="cta-band">
+  <div class="wrap">
+    <h2>Vamos dar uma olhada no seu carro?</h2>
+    <p>Manda uma mensagem agora e recebe o orçamento sem compromisso.</p>
+    <div class="hero-ctas">
+      <a class="btn btn-primary" target="_blank" rel="noopener"
+         href="https://wa.me/5511999999999?text=Ol%C3%A1%2C%20Lucar!%20Quero%20solicitar%20um%20or%C3%A7amento.">
+        Solicitar orçamento pelo WhatsApp
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a href="#topo" class="brand">
+          <svg class="brand-mark" viewBox="0 0 40 40" fill="none">
+            <circle cx="20" cy="20" r="17" stroke="#FFC72C" stroke-width="2"/>
+            <path d="M20 8 L20 13 M20 27 L20 32 M8 20 L13 20 M27 20 L32 20" stroke="#EDEAE2" stroke-width="2" stroke-linecap="round"/>
+            <path d="M20 20 L27 14" stroke="#E85D2C" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="20" cy="20" r="2.5" fill="#EDEAE2"/>
+          </svg>
+          <span class="brand-text">
+            <span class="name">LUCAR</span>
+            <span class="sub">Mecânica Automotiva</span>
+          </span>
+        </a>
+        <p>Diagnóstico honesto, mão de obra qualificada e peças de procedência — cuidando do seu carro como se fosse o nosso.</p>
+      </div>
+      <div>
+        <h4>Navegação</h4>
+        <ul>
+          <li><a href="#servicos">Serviços</a></li>
+          <li><a href="#fotos">Fotos da oficina</a></li>
+          <li><a href="#depoimentos">Depoimentos</a></li>
+          <li><a href="#localizacao">Localização</a></li>
+          <li><a href="#horario">Horário</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contato</h4>
+        <ul>
+          <li><a target="_blank" rel="noopener" href="https://wa.me/5511999999999">WhatsApp: (11) 99999-9999</a></li>
+          <li><a href="mailto:contato@lucarmecanica.com.br">contato@lucarmecanica.com.br</a></li>
+          <li>Rua das Oficinas, 456 — São Paulo, SP</li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 LUCAR MECÂNICA AUTOMOTIVA</span>
+      <span>DADOS DE CONTATO E ENDEREÇO SÃO EXEMPLOS — SUBSTITUA PELOS REAIS</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ WHATSAPP FLUTUANTE ============ -->
+<a class="fab" target="_blank" rel="noopener" aria-label="Falar no WhatsApp"
+   href="https://wa.me/5511999999999?text=Ol%C3%A1%2C%20Lucar!%20Quero%20solicitar%20um%20or%C3%A7amento.">
+  <span class="fab-ring"></span>
+  <svg viewBox="0 0 32 32"><path d="M16.001 3C9.14 3 3.57 8.57 3.57 15.43c0 2.42.68 4.68 1.85 6.6L3 29l7.15-2.36a12.4 12.4 0 0 0 5.85 1.49h.01c6.86 0 12.43-5.57 12.43-12.43C28.44 8.57 22.87 3 16.001 3zm0 22.6h-.01a10.3 10.3 0 0 1-5.25-1.44l-.38-.22-3.9 1.29 1.31-3.8-.25-.39a10.3 10.3 0 0 1-1.6-5.52C5.941 9.7 10.44 5.2 16 5.2c2.75 0 5.34 1.07 7.29 3.02a10.24 10.24 0 0 1 3.02 7.3c0 5.6-4.5 10.1-10.32 10.1zm5.65-7.55c-.31-.15-1.83-.9-2.11-1.01-.28-.1-.49-.15-.7.16-.2.31-.8 1-.98 1.21-.18.2-.36.23-.67.08-.31-.15-1.3-.48-2.48-1.53-.92-.82-1.54-1.83-1.72-2.14-.18-.31-.02-.48.13-.63.14-.14.31-.36.46-.54.15-.18.2-.31.31-.51.1-.2.05-.39-.02-.54-.08-.15-.7-1.69-.96-2.31-.25-.6-.51-.52-.7-.53h-.6c-.2 0-.54.08-.83.39-.28.31-1.09 1.06-1.09 2.6s1.12 3.02 1.27 3.23c.15.2 2.2 3.36 5.34 4.71.75.32 1.33.51 1.78.66.75.24 1.43.2 1.97.13.6-.09 1.83-.75 2.09-1.47.26-.72.26-1.34.18-1.47-.07-.13-.28-.2-.59-.35z"/></svg>
+</a>
+
+</body>
+</html>
